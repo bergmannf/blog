@@ -1,0 +1,16 @@
+#+HUGO_BASE_DIR: ../../
+#+HUGO_SECTION: posts
+
+#+TITLE: Personal blog
+
+* Test post with ox-hugo
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: text-ox-hugo
+  :EXPORT_DATE: 2020-03-29
+  :END:
+  This is a test post using =ox-hugo=
+
+  #+begin_src python
+    def main():
+        print("Hello World")
+  #+end_src
