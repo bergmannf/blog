@@ -3,14 +3,34 @@
 
 #+TITLE: Personal blog
 
-* Test post with ox-hugo
+* Converting openssh private key to PEM format :openssh:
   :PROPERTIES:
-  :EXPORT_FILE_NAME: text-ox-hugo
+  :EXPORT_FILE_NAME: openssh-private-key
   :EXPORT_DATE: 2020-03-29
   :END:
-  This is a test post using =ox-hugo=
+  Newer versions of the =openssh= will use their own format to store a private
+  key:
 
-  #+begin_src python
-    def main():
-        print("Hello World")
+  #+begin_src conf
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    BASE64KEYTEXT
+    -----END OPENSSH PRIVATE KEY-----
+  #+end_src
+  
+  The traditional format of the key can sometimes be useful (or even required -
+  for example [[https://guacamole.apache.org/][guacamole]] will not be able to use the =OPENSSH= key format).
+
+  To convert the key use =ssh-keygen=. The command will overwrite the private
+  key file, so if the original key should be preserved make sure to create a
+  backup:
+  
+  #+begin_src bash
+    ssh-keygen -p -m PEM -f ~/.ssh/id_rsa_test
+  #+end_src
+
+  #+name: Output
+  #+begin_src conf
+    -----BEGIN RSA PRIVATE KEY-----
+    BASE64KEYTEXT
+    -----END RSA PRIVATE KEY-----
   #+end_src
