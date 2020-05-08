@@ -36,7 +36,7 @@
     -----END RSA PRIVATE KEY-----
   #+end_src
 
-* DONE Deploying Teamspeak on a Raspberry PI kubernetes cluster :kubernetes:arm:raspberry:
+* Deploying Teamspeak on a Raspberry PI kubernetes cluster :kubernetes:arm:raspberry:
   CLOSED: [2020-05-08 Fri 22:59]
   :PROPERTIES:
   :EXPORT_FILE_NAME: teamspeak-k8s-arm
@@ -58,8 +58,8 @@
    the cluster will be more lightweight that simply installing upstream
    kubernetes.
 
-   As a base I still recommend using [[https://blog.hypriot.com/][HypriotOS]] as it allows configuring the
-   basics using [[https://cloudinit.readthedocs.io/en/latest/][Cloud-Init]].
+   As a base I recommend using [[https://blog.hypriot.com/][HypriotOS]] or [[https://ubuntu.com/download/server/arm][Ubuntu Server]][fn:3] as those allow
+   configuring the images using [[https://cloudinit.readthedocs.io/en/latest/][Cloud-Init]].
    
    Make sure to follow the instructions to use the the =legacy= backend for
    =iptables= if installing =kubernetes= v1.17 or lower: [[https://v1-17.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#ensure-iptables-tooling-does-not-use-the-nftables-backend][kubeadm instructions]].
@@ -318,6 +318,10 @@
     poetry run ansible-test integration
   #+end_src
 * Footnotes
+
+[fn:3] For Ubuntu you will have to edit the file =/boot/firmware/cmdline.txt=
+and add the options =cgroup_memory=1 cgroup_enable=memory= at the end of the
+line for =k3s= (or =containers= in general) to work.
 
 [fn:2] This might hopefully become easier in the future: https://github.com/ansible/ansible/issues/60215
 

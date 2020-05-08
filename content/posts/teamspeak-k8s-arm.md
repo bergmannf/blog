@@ -1,8 +1,8 @@
 +++
 title = "Deploying Teamspeak on a Raspberry PI kubernetes cluster"
-date = 2020-04-18
+date = 2020-05-08T22:59:00+02:00
 tags = ["kubernetes", "arm", "raspberry"]
-draft = true
+draft = false
 +++
 
 While this post will end up with a running [Teamspeak](https://www.teamspeak.com/en/) server, it is very hard
@@ -24,8 +24,8 @@ To setup a kubernetes cluster on Raspberry Pis [K3S](https://k3s.io/) is very go
 the cluster will be more lightweight that simply installing upstream
 kubernetes.
 
-As a base I still recommend using [HypriotOS](https://blog.hypriot.com/) as it allows configuring the
-basics using [Cloud-Init](https://cloudinit.readthedocs.io/en/latest/).
+As a base I recommend using [HypriotOS](https://blog.hypriot.com/) or [Ubuntu Server](https://ubuntu.com/download/server/arm)[^fn:1] as those allow
+configuring the images using [Cloud-Init](https://cloudinit.readthedocs.io/en/latest/).
 
 Make sure to follow the instructions to use the the `legacy` backend for
 `iptables` if installing `kubernetes` v1.17 or lower: [kubeadm instructions](https://v1-17.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#ensure-iptables-tooling-does-not-use-the-nftables-backend).
@@ -82,7 +82,7 @@ The images used in the `manifests` are not compatible with `armv7` (that is
 used when running a cluster on a bunch of Raspberry Pis).
 
 First the `mandatory.yaml` has to be updated to use the images for the `arm`
-architecture[^fn:1]:
+architecture[^fn:2]:
 
 ```sh
 wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
@@ -253,4 +253,5 @@ Events:                   <none>
 In this case the port that needs to be forwarded is the `31222` port (the
 `NodePort` for the 9987 `UDP` port).
 
-[^fn:1]: See <https://github.com/kubernetes/ingress-nginx/pull/3852>
+[^fn:1]: For Ubuntu you will have to edit the file `/boot/firmware/cmdline.txt` and add the options `cgroup_memory=1 cgroup_enable=memory` at the end of the line for `k3s` (or `containers` in general) to work.
+[^fn:2]: See <https://github.com/kubernetes/ingress-nginx/pull/3852>
