@@ -36,7 +36,8 @@
     -----END RSA PRIVATE KEY-----
   #+end_src
 
-* TODO Deploying Teamspeak on a Raspberry PI kubernetes cluster :kubernetes:arm:raspberry:
+* DONE Deploying Teamspeak on a Raspberry PI kubernetes cluster :kubernetes:arm:raspberry:
+  CLOSED: [2020-05-08 Fri 22:59]
   :PROPERTIES:
   :EXPORT_FILE_NAME: teamspeak-k8s-arm
   :EXPORT_DATE: 2020-04-18
@@ -266,6 +267,58 @@
    
    In this case the port that needs to be forwarded is the =31222= port (the
    =NodePort= for the 9987 =UDP= port).
+* Testing an ansible collection                                     :ansible:
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: testing-ansible-collections
+  :EXPORT_DATE: 2020-05-08
+  :END:
+  When wanting to work on a collection for =ansible= it is (for now[fn:2]) important
+  to check it out in a very specific folder structure or it will not be possible
+  to run the tests for it.
+  
+  When trying to run =ansible-test integration= it will otherwise throw the
+  following error:
+
+  #+begin_src text
+    ERROR: The current working directory must be at or below:
+
+     - an Ansible collection: {...}/ansible_collections/{namespace}/{collection}/
+
+    Current working directory: <some_other_dir>
+  #+end_src
+
+  The collection must be really placed inside a =subfolder= of a folder called
+  =ansible_collections= and neither =namespace= nor =collection= can contain
+  any symbols except =alphanumberics= or =underscores= (=[a-zA-Z0-9_]=):
+
+  #+begin_src sh
+    ansible_collections
+    └── namespace
+        └── collection
+  #+end_src
+  
+  So if you want to work on an upstream collection (e.g. [[https://github.com/ansible-collections/community.general][community.general]]) you
+  should create an intermediate folder =community= and clone the collection into
+  the =general= folder (contrary to the default checkout which would be
+  =community.general=):
+  
+  #+begin_src sh
+    ansible_collections
+    └── community
+        └── general
+  #+end_src
+  
+  Inside =general= you can now use run =ansible-test integration= to run
+  the integration tests successfully:
+  
+  #+begin_src sh
+    cd ansible_collections/community/general
+    poetry init --name community.general --dependency=ansible --dependency=pyyaml --dependency=jinja2 -n
+    poetry install
+    poetry run ansible-test integration
+  #+end_src
 * Footnotes
+
+[fn:2] This might hopefully become easier in the future: https://github.com/ansible/ansible/issues/60215
 
 [fn:1] See https://github.com/kubernetes/ingress-nginx/pull/3852 
