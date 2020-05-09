@@ -1,32 +1,113 @@
-baseURL = "https://bergmannf.github.io/"
 languageCode = "en-us"
+
+baseurl = "https://blog.niflheim.cc/"
 title = "Personal blog"
-copyright = "This is a customized copyright."
-theme = "hyde-hyde"
+
+theme = "hugo-coder"
+
+languagecode = "en"
+defaultcontentlanguage = "en"
+
+paginate = 20
+canonifyurls = true
+
+pygmentsstyle = "b2"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+
 ignoreFiles = [ "\\.org" ]
 
+disqusShortname = "nifl-blog"
+googleAnalytics = "UA-165940833-1"
 [params]
     author = "Florian Bergmann"
-    title = "My personal blog"
-    authorimage = "/img/avatar.png"
+    avatarurl = "img/avatar.png"
 
-    # https://highlightjs.org
-    highlightjs = true
-    highlightjsstyle = "github"
+    description = "My personal blog"
+    keywords = "blog,developer,personal"
+    info = ""
+    #gravatar = "john.doe@example.com"
+    footercontent = "All opinions expressed here are solely my own."
 
-[params.social]
-    github = "bergmannf"
-    # orcid = "<xxxx-xxxx-xxxx-xxxx>"
-    # gravatar = "your-email@example.com"
+    dateformat = "January 2, 2006"
 
-## Main Menu
-[[menu.main]]
-    name = "Posts"
-    weight = 100
-    identifier = "posts"
-    url = "/posts/"
-[[menu.main]]
-    name = "About"
-    identifier = "about"
-    weight = 300
-    url = "/about/"
+    hideFooter = false
+    hideCredits = false
+    hideCopyright = false
+    since = 2019
+
+    # Git Commit in Footer, uncomment the line below to enable it.
+    # commit = "https://github.com/luizdepra/hugo-coder/tree/"
+
+    rtl = false
+
+    # Specify light/dark colorscheme
+    # Supported values:
+    # "auto" (use preference set by browser)
+    # "dark" (dark background, light foreground)
+    # "light" (light background, dark foreground) (default)
+    colorscheme = "auto"
+
+    # Series see also post count
+    maxSeeAlsoItems = 5
+
+    # Custom CSS
+    custom_css = []
+
+    # Custom JS
+    custom_js = []
+
+[taxonomies]
+  category = "categories"
+  series = "series"
+  tag = "tags"
+
+[[params.social]]
+    name = "Github"
+    icon = "fab fa-github"
+    weight = 1
+    url = "https://github.com/bergmannf/"
+[[params.social]]
+    name = "Gitlab"
+    icon = "fab fa-gitlab"
+    weight = 2
+    url = "https://gitlab.com/bergmannf/"
+# [[params.social]]
+#     name = "Twitter"
+#     icon = "fab fa-twitter"
+#     weight = 3
+#     url = "https://twitter.com/johndoe/"
+[[params.social]]
+    name = "Stackoverflow"
+    icon = "fab fa-stack-overflow"
+    weight = 4
+    url = "https://stackoverflow.com/users/247675/bergmannf"
+[[params.social]]
+    name = "LinkedIn"
+    icon = "fab fa-linkedin"
+    weight = 4
+    url = "https://www.linkedin.com/in/florian-bergmann-479b6888/"
+[[params.social]]
+    name = "RSS"
+    icon = "fas fa-rss"
+    weight = 6
+    url = "https://blog.niflheim.cc/index.xml"
+    rel = "alternate"
+    type = "application/rss+xml"
+
+
+[languages]
+    [languages.en]
+        languagename = "English"
+
+        [languages.en.menu]
+
+            [[languages.en.menu.main]]
+            name = "About"
+            weight = 1
+            url = "about/"
+
+            [[languages.en.menu.main]]
+            name = "Blog"
+            weight = 2
+            url = "posts/"
