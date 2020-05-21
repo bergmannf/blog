@@ -317,7 +317,117 @@
     poetry install
     poetry run ansible-test integration
   #+end_src
+* TODO Install kata-containers on K3S on aarch64 :kubernetes:raspberry:
+  To install =kata-containers= on a =raspberry-pi= and integrating it into
+  =kubernetes= a few steps are currently required:
+
+  - Install =kata-containers=
+  - Setup integration into =containerd=
+  - Setup integration into =kubernetes=
+** Install =kata-containers=
+   Currently the easiest (and apparently only) officially supported way to
+   install =kata-containers= on an =aarch64= system is to use =snaps=.
+
+   If you are using the =Ubuntu= =arm= version this is already included in the
+   installation and you can install =kata-containers= with a single command[fn:4]:
+
+   #+begin_src sh
+     sudo snap install kata-containers --classic
+   #+end_src
+   
+** Integration into containerd
+   When running =k3s= there is no =containerd= binary as it is embedded into
+   =k3s=, so configuration must be performed in the =k3s= configuration.
+   
+   #+BEGIN_QUOTE
+   References   
+   
+   - [[https://github.com/kata-containers/packaging/pull/823][PR]] adding =k3s= support to =kata-deploy=
+   #+END_QUOTE
+
+   A =runtime= must be configured for =kata-containers= in =containerd=. The
+   configuration file is found under: =/etc/containerd/config.toml=
+   
+   The content should be:
+
+   #+begin_src toml
+     [plugins.cri.containerd.runtimes.kata]
+       runtime_type = "io.containerd.kata.v2"
+
+     [kata.options]
+       ConfigPath = "/etc/kata-containers/configuration.toml
+   #+end_src
+   
+   The configuration files =/etc/kata-containers/*.toml= must be copied from the
+   snap, because the default configuration will not be able to start on older
+   Raspberry Pis, as it requests too much memory:
+
+   #+begin_src sh
+     mkdir -p /etc/kata-containers/
+     cp /snap/kata-containers/current/usr/share/defaults/kata-containers/*.toml /etc/kata-containers/
+   #+end_src
+   
+   Inside this configuration files (depending on the Pi) make sure to adjust the
+   value of =default_memory= to something the hardware can handle. You should at
+   least adjust the default =configuration.toml= and =configuration-qemu.toml=.
+   
+   In addition =shim= files must be created in =/usr/local/bin= to point to the
+   =shim= binaries of =kata-containers= for =containerd= to pick it up.
+   
+   The following script will create all the shims (including some that might not
+   actually be supported) - it was copied out of the =kata-deploy= project.
+
+   #+begin_src sh
+     #!/bin/bash
+     shims=(
+         "fc"
+         "qemu"
+         "qemu-virtiofs"
+         "clh"
+     )
+
+     for shim in "${shims[@]}"; do
+         shim_binary="containerd-shim-kata-${shim}-v2"
+         shim_file="/usr/local/bin/${shim_binary}"
+         shim_backup="/usr/local/bin/${shim_binary}.bak"
+
+         if [ -f "${shim_file}" ]; then
+             echo "warning: ${shim_binary} already exists" >&2
+             if [ ! -f "${shim_backup}" ]; then
+                 mv "${shim_file}" "${shim_backup}"
+             else
+                 rm "${shim_file}"
+             fi
+         fi
+         cat << EOT | tee "$shim_file"
+     #!/bin/bash
+     KATA_CONF_FILE=/etc/kata-containers/configuration.toml /snap/kata-containers/current/usr/bin/containerd-shim-kata-v2 \$@
+     EOT
+         chmod +x "$shim_file"
+     done
+
+     # On the PI a default shim was also needed
+     cp /usr/local/bin/containerd-shim-kata-qemu-v2 /usr/local/bin/containerd-shim-kata-v2
+   #+end_src
+   
+   Now the =k3s-agent= must be restarted to reload the =containerd=
+   configuration and we can test that kata-container runtime is working by
+   running the following commands:
+
+   #+begin_src sh
+     ctr image pull docker.io/library/busybox:latest
+     ctr run --runtime io.containerd.run.kata.v2 -t --rm docker.io/library/busybox:latest hello sh
+   #+end_src
+   
+   Now the node must be labeled as supporting =kata-containers=:
+
+   #+begin_src sh
+     kubectl label node "$NODE_NAME" --overwrite katacontainers.io/kata-runtime=true
+   #+end_src
+
 * Footnotes
+
+[fn:4] As documented [[https://github.com/kata-containers/packaging/blob/master/snap/README.md#initial-setup][here]].
 
 [fn:3] For Ubuntu you will have to edit the file =/boot/firmware/cmdline.txt=
 and add the options =cgroup_memory=1 cgroup_enable=memory= at the end of the
