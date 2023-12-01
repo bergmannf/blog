@@ -3,7 +3,7 @@ languageCode = "en-us"
 baseurl = "https://blog.niflheim.cc/"
 title = "Personal blog"
 
-theme = "hugo-coder"
+theme = "beautifulhugo"
 
 languagecode = "en"
 defaultcontentlanguage = "en"
@@ -11,7 +11,7 @@ defaultcontentlanguage = "en"
 paginate = 20
 canonifyurls = true
 
-pygmentsstyle = "manni"
+pygmentsstyle = "github-dark"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
@@ -19,12 +19,13 @@ ignoreFiles = [ "\\.org" ]
 
 disqusShortname = "nifl-blog"
 googleAnalytics = "UA-165940833-1"
+
 [params]
     author = "Florian Bergmann"
     avatarurl = "img/avatar.png"
 
     description = "My personal blog"
-    keywords = "blog,developer,personal"
+    keywords = ["blog", "developer", "personal"]
     info = ""
     #gravatar = "john.doe@example.com"
     footercontent = "All opinions expressed here are solely my own."
@@ -56,45 +57,20 @@ googleAnalytics = "UA-165940833-1"
 
     # Custom JS
     custom_js = []
+    ShowRssButtonInSectionTermList = true
 
-[taxonomies]
-  category = "categories"
-  series = "series"
-  tag = "tags"
-
-[[params.social]]
+[[params.socialIcons]]
     name = "Github"
-    icon = "fab fa-github"
-    weight = 1
     url = "https://github.com/bergmannf/"
-[[params.social]]
+[[params.socialIcons]]
     name = "Gitlab"
-    icon = "fab fa-gitlab"
-    weight = 2
     url = "https://gitlab.com/bergmannf/"
-# [[params.social]]
-#     name = "Twitter"
-#     icon = "fab fa-twitter"
-#     weight = 3
-#     url = "https://twitter.com/johndoe/"
-[[params.social]]
+[[params.socialIcons]]
     name = "Stackoverflow"
-    icon = "fab fa-stack-overflow"
-    weight = 4
     url = "https://stackoverflow.com/users/247675/bergmannf"
-[[params.social]]
+[[params.socialIcons]]
     name = "LinkedIn"
-    icon = "fab fa-linkedin"
-    weight = 4
     url = "https://www.linkedin.com/in/florian-bergmann-479b6888/"
-[[params.social]]
-    name = "RSS"
-    icon = "fas fa-rss"
-    weight = 6
-    url = "https://blog.niflheim.cc/index.xml"
-    rel = "alternate"
-    type = "application/rss+xml"
-
 
 [languages]
     [languages.en]
