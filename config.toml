@@ -3,7 +3,7 @@ languageCode = "en-us"
 baseurl = "https://blog.niflheim.cc/"
 title = "Personal blog"
 
-theme = "beautifulhugo"
+theme = "PaperMod"
 
 languagecode = "en"
 defaultcontentlanguage = "en"
@@ -11,9 +11,22 @@ defaultcontentlanguage = "en"
 paginate = 20
 canonifyurls = true
 
-pygmentsstyle = "github-dark"
-pygmentscodefences = true
-pygmentscodefencesguesssyntax = true
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    hl_inline = false
+    lineAnchors = ""
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = false
+    noClasses = false
+    noHl = false
+    style = "monokai"
+    tabWidth = 4
 
 ignoreFiles = [ "\\.org" ]
 
@@ -47,7 +60,7 @@ googleAnalytics = "UA-165940833-1"
     # "auto" (use preference set by browser)
     # "dark" (dark background, light foreground)
     # "light" (light background, dark foreground) (default)
-    colorscheme = "auto"
+    colorscheme = "light"
 
     # Series see also post count
     maxSeeAlsoItems = 5
@@ -59,18 +72,27 @@ googleAnalytics = "UA-165940833-1"
     custom_js = []
     ShowRssButtonInSectionTermList = true
 
-[[params.socialIcons]]
-    name = "Github"
-    url = "https://github.com/bergmannf/"
-[[params.socialIcons]]
-    name = "Gitlab"
-    url = "https://gitlab.com/bergmannf/"
-[[params.socialIcons]]
-    name = "Stackoverflow"
-    url = "https://stackoverflow.com/users/247675/bergmannf"
-[[params.socialIcons]]
-    name = "LinkedIn"
-    url = "https://www.linkedin.com/in/florian-bergmann-479b6888/"
+    [params.assets]
+        disableHLJS = true
+
+    [params.homeInfoParams]
+        Title = "Information"
+        Content = "These are just some notes and posts I write to share information. All opinions stated in these posts are solely my own."
+
+
+    [[params.socialIcons]]
+        name = "Github"
+        title = "Github"
+        url = "github.com/bergmannf/"
+    [[params.socialIcons]]
+        name = "gitlab"
+        url = "https://gitlab.com/bergmannf/"
+    [[params.socialIcons]]
+        name = "stackoverflow"
+        url = "https://stackoverflow.com/users/247675/bergmannf"
+    [[params.socialIcons]]
+        name = "linkedin"
+        url = "https://www.linkedin.com/in/florian-bergmann-479b6888/"
 
 [languages]
     [languages.en]
