@@ -1,9 +1,6 @@
 [submodule "public"]
 	path = public
 	url = git@github.com:bergmannf/bergmannf.github.io.git
-[submodule "themes/beautifulhugo"]
-	path = themes/beautifulhugo
-	url = https://github.com/halogenica/beautifulhugo.git
 [submodule "PaperMod"]
 	path = themes/PaperMod
 	url = https://github.com/adityatelange/hugo-PaperMod
