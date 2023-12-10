@@ -83,7 +83,7 @@ googleAnalytics = "UA-165940833-1"
     [[params.socialIcons]]
         name = "Github"
         title = "Github"
-        url = "github.com/bergmannf/"
+        url = "https://github.com/bergmannf/"
     [[params.socialIcons]]
         name = "gitlab"
         url = "https://gitlab.com/bergmannf/"
